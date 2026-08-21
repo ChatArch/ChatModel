@@ -6,22 +6,35 @@ Importable Python functions are mapped in [Interface Tree](interface-tree.md). C
 
 ## Current Runtime Command Tree
 
-The block below is rendered by `chatmodel --tree` from the real Click registry. `ChatModel` currently has no business subcommands, so only root pseudo-options are shown.
+The top-level Click group uses `chatstyle.add_tree_option()`. `chatmodel --tree` includes command parameter signatures by default:
 
 ```text
-chatmodel # chatmodel command line interface
-├── --help # Show this message and exit
-├── --version # Show the package version
-└── --tree # Show the registered CLI command tree
-
+chatmodel
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
 ```
+
+`chatmodel --tree-brief` keeps command nodes and descriptions but omits command parameter signatures:
+
+```text
+chatmodel
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+```
+
+`ChatModel` currently has no business subcommands, so both real readbacks contain only parameterless root pseudo-options and are textually identical. Package tests temporarily register a parameterized command to verify the full/brief difference. The public root is fixed to `chatmodel`, the canonical name of the sole console script.
 
 ## Base Entries
 
 ```text
 chatmodel --help           # Verify the command is installed and inspect current help
 chatmodel --version        # Verify the installed version
-chatmodel --tree           # Print the current real CLI registry
+chatmodel --tree           # Print the real CLI registry with parameter signatures
+chatmodel --tree-brief     # Print the concise CLI registry without parameter signatures
 ```
 
 ## Business Command Status
@@ -31,5 +44,6 @@ This package currently has no business subcommands. Do not document template pla
 ## Implementation Contract
 
 - Every implemented command must map back to a Python function, class, or service layer.
+- Use the shared ChatStyle runtime for the top-level CLI tree; keep signatures in the default tree and omit them in the brief tree.
 - If a command writes remote state, document credentials, permissions, dry-run/checkpoint behavior, or confirmation boundaries.
 - When adding a command, update README, the interface tree, capability map, tests, and related flow pages together.

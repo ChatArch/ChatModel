@@ -6,22 +6,35 @@
 
 ## 当前 runtime 命令树
 
-以下内容由 `chatmodel --tree` 对真实 Click registry 渲染得到。当前 `ChatModel` 暂无业务子命令，因此只展示 root pseudo-options。
+顶层 Click group 使用 `chatstyle.add_tree_option()`。`chatmodel --tree` 默认显示命令参数签名：
 
 ```text
-chatmodel # chatmodel command line interface
-├── --help # Show this message and exit
-├── --version # Show the package version
-└── --tree # Show the registered CLI command tree
-
+chatmodel
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
 ```
+
+`chatmodel --tree-brief` 保留命令节点和描述，但省略命令参数签名：
+
+```text
+chatmodel
+├── --help  # Show this message and exit.
+├── --version  # Show the version and exit.
+├── --tree  # Print the registered CLI tree and exit.
+└── --tree-brief  # Print the registered CLI tree without parameter signatures and exit.
+```
+
+当前 `ChatModel` 暂无业务子命令，因此两个真实 readback 都只显示无参数的 root pseudo-options，文本相同；包测试通过临时注册带参数命令验证 full/brief 差异。公共树根固定为唯一 console script 的规范名称 `chatmodel`。
 
 ## 基础入口
 
 ```text
 chatmodel --help           # 验证命令已安装，并查看当前帮助
 chatmodel --version        # 验证当前安装版本
-chatmodel --tree           # 输出当前真实 CLI registry
+chatmodel --tree           # 输出带参数签名的真实 CLI registry
+chatmodel --tree-brief     # 输出省略参数签名的简洁 CLI registry
 ```
 
 ## 业务命令状态
@@ -31,5 +44,6 @@ chatmodel --tree           # 输出当前真实 CLI registry
 ## 实现合约
 
 - 每个已实现命令都要能追到 Python 函数、类或 service 层。
+- 顶层 CLI tree 统一使用 ChatStyle runtime；默认树保留参数签名，brief 树省略参数签名。
 - 如果命令会写远端状态，文档必须说明凭据、权限、dry-run/checkpoint 或确认边界。
 - 新增命令时，同步更新 README、接口树、能力地图、测试和相关 Flow 页面。
