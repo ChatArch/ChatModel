@@ -37,14 +37,16 @@ pip install -e ".[dev]"
 chatmodel --help
 chatmodel --version
 chatmodel --tree
+chatmodel --tree-brief
 python -m pytest -q
 python -m build
 ```
 
 ## 命令行规范
 
-这个模板默认依赖 `chatstyle>=0.1.0,<0.2.0` 和 `chatenv>=0.2.4,<0.3.0`，新增命令应优先使用：
+这个模板默认依赖 `chatstyle>=0.2.0,<0.3.0` 和 `chatenv>=0.2.10,<0.3.0`，新增命令应优先使用：
 
+- `add_tree_option()` 提供共享 `--tree` / `--tree-brief`；默认树显示参数签名，brief 树省略签名。
 - `CommandSchema` / `CommandField` 描述输入。
 - `add_interactive_option()` 提供统一 `-i/-I`。
 - `resolve_command_inputs()` 统一缺参补问、默认值、TTY 与校验。

@@ -22,5 +22,10 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -e ".[dev,docs]"
       - run: python -m pytest -q
+      - name: Smoke-test installed CLI contract
+        run: |
+          chatmodel --version
+          chatmodel --tree
+          chatmodel --tree-brief
       - run: python -m build
       - run: mkdocs build --strict

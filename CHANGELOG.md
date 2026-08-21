@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-08-21
+
+### Added
+
+- 新增顶层 `chatmodel --tree-brief`，保留命令节点与描述并省略参数签名。
+
+### Changed
+
+- 将包版本提升到 `0.1.2`，顶层 `--tree` 迁移到 ChatStyle 共享 Click tree runtime；默认输出参数签名。
+- 将依赖窗口更新为 `chatstyle>=0.2.0,<0.3.0` 和 `chatenv>=0.2.10,<0.3.0`。
+- 移除本地 CLI tree renderer，并固定公共树根名为规范命令名 `chatmodel`。
+
 ## 2026-08-11
 
 ### Added
